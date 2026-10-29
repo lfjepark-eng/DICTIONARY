@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>재무기획팀 백과사전</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+@property --ang { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+:root{
+  --bg:#07080d; --bg2:#0b0d15; --card:#10131d; --card2:#151927;
+  --ink:#eef0f7; --mute:#a4abbf; --dim:#8b93a8; --line:rgba(255,255,255,.09);
+  --g1-text:#a78bfa;
+  --g1:#7c5cff; --g2:#22d3ee; --g3:#34d399; --g4:#fbbf24; --g5:#fb7185;
+  --grad:linear-gradient(120deg,var(--g1),var(--g2) 45%,var(--g3));
+  --font:'Noto Sans KR','Pretendard','Malgun Gothic',system-ui,sans-serif;
+  --r:20px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:140px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.75;font-size:17px;overflow-x:hidden;word-break:keep-all;overflow-wrap:break-word;line-break:strict}
+:where(.term-head,.term-more,.chip,.qlink,.chapnav a,.idx-g a,.brand,.totop,#hv button):focus-visible{outline:2px solid var(--g2);outline-offset:3px;border-radius:10px}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60vw 40vh at 15% -5%,rgba(124,92,255,.22),transparent 60%),
+             radial-gradient(50vw 40vh at 95% 5%,rgba(34,211,238,.14),transparent 60%),
+             radial-gradient(50vw 50vh at 50% 110%,rgba(52,211,153,.10),transparent 60%),
+             linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px) 0 0/48px 48px,
+             linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px) 0 0/48px 48px}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad);z-index:100}
+
+/* ---------- gradient glow border ---------- */
+.glow{position:relative;border-radius:var(--r);background:var(--card)}
+.glow::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:conic-gradient(from var(--ang),rgba(255,255,255,.07) 0 55%,var(--g1),var(--g2),var(--g3),var(--g4),var(--g5),var(--g1));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+  opacity:.55;transition:opacity .3s}
+.glow::after{content:"";position:absolute;inset:-2px;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:conic-gradient(from var(--ang),transparent 0 55%,var(--g1),var(--g2),var(--g3),var(--g4),var(--g5),var(--g1));
+  filter:blur(18px);opacity:0;transition:opacity .35s}
+/* 회전은 '주목 순간'(마우스 hover, 검색·색인 도착 직후 .live)에만. 펼친 카드는 정지된 밝은 테두리로 읽기 방해 없음 */
+.glow.open::before,.glow:focus-within::before{opacity:.95}
+.glow.open::after{opacity:.1}
+.glow.live::before{opacity:1;animation:spin 5s linear infinite}
+.glow.live::after{opacity:.28;animation:spin 5s linear infinite}
+@media (hover:hover){
+  .glow:hover::before{opacity:1;animation:spin 5s linear infinite}
+  .glow:hover::after{opacity:.24;animation:spin 5s linear infinite}
+}
+body.all-open .glow::before,body.all-open .glow::after{animation:none !important}
+@keyframes spin{to{--ang:360deg}}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px) saturate(1.4);background:rgba(7,8,13,.72);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:14px;height:64px}
+.brand{font-weight:900;letter-spacing:-.02em;white-space:nowrap;text-decoration:none;display:flex;align-items:center;gap:8px}
+.brand i{width:10px;height:10px;border-radius:50%;background:var(--grad);box-shadow:0 0 14px var(--g2)}
+.search{flex:1;position:relative;max-width:520px;margin-left:auto}
+.search input{width:100%;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:var(--ink);padding:0 64px 0 42px;font:inherit;font-size:16px;outline:none;transition:border-color .2s,box-shadow .2s}
+.search input::placeholder{color:var(--dim)}
+.search output{position:absolute;right:16px;top:11px;font-size:14px;color:var(--g2);font-weight:700;pointer-events:none}
+.search input:focus{border-color:var(--g2);box-shadow:0 0 0 4px rgba(34,211,238,.12)}
+.search svg{position:absolute;left:15px;top:12px;width:18px;height:18px;stroke:var(--mute)}
+.navtoggle{display:none;background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;height:40px;padding:0 12px;font:inherit;cursor:pointer}
+.chapnav{display:flex;gap:6px;overflow-x:auto;padding:10px 20px;scrollbar-width:none;border-top:1px solid var(--line)}
+.chapnav::-webkit-scrollbar{display:none}
+@media (min-width:861px){.chapnav{flex-wrap:wrap;overflow:visible;justify-content:center;row-gap:6px}}
+.chapnav a{flex:none;text-decoration:none;font-size:14.5px;color:#c4cad9;padding:6px 14px;border-radius:999px;border:1px solid transparent;transition:.2s;white-space:nowrap}
+.chapnav a:hover{color:var(--ink);border-color:var(--line)}
+.chapnav a.on{color:#fff;background:rgba(124,92,255,.22);border-color:rgba(124,92,255,.55)}
+
+/* ---------- hero ---------- */
+.hero{padding:56px 0 28px;text-align:center}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--g2);padding:6px 14px;border:1px solid rgba(34,211,238,.35);border-radius:999px;background:rgba(34,211,238,.07)}
+.hero h1{font-size:clamp(34px,6.4vw,68px);line-height:1.12;margin:18px 0 14px;font-weight:900;letter-spacing:-.035em}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{max-width:680px;margin:0 auto;color:var(--mute);font-size:clamp(15px,2vw,18px)}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.stats b{font-weight:700;font-size:13.5px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink)}
+.stats b em{font-style:normal;color:var(--g3)}
+.videowrap{margin:34px auto 10px;max-width:1100px}
+
+/* ---------- guide ---------- */
+.section-title{font-size:clamp(22px,3.2vw,32px);font-weight:900;letter-spacing:-.02em;margin:0 0 6px}
+.section-sub{color:var(--mute);margin:0 0 22px}
+.guide{padding:54px 0 10px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.step{padding:22px}
+.step .n{font-size:13.5px;font-weight:700;color:var(--g1-text);letter-spacing:.06em}
+.step h3{margin:6px 0 6px;font-size:19px}
+.step p{margin:0;color:var(--mute);font-size:16px}
+.qs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:6px}
+.q{padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+.q .num{flex:none;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:14px;background:rgba(124,92,255,.2);color:#cfc6ff}
+.q .num{color:#e2dcff}
+.q p{margin:0 0 10px;font-weight:500;font-size:16.5px}
+.qlink{font:inherit;font-size:14px;color:var(--g2);background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.3);border-radius:999px;padding:5px 14px;cursor:pointer;margin:0 6px 4px 0;transition:.2s}
+.qlink:hover{background:rgba(34,211,238,.2)}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:46px 0 8px}
+.chip{font:inherit;font-size:15px;color:#c4cad9;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 18px;cursor:pointer;transition:.2s}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed="true"]{color:#fff;border-color:transparent;background:linear-gradient(120deg,rgba(124,92,255,.7),rgba(34,211,238,.55))}
+.controls .grow{flex:1}
+#count{color:var(--mute);font-size:14px}
+
+/* ---------- chapters ---------- */
+.chapter{padding:56px 0 8px}
+.chapter-head{margin-bottom:22px;position:relative}
+.chap-ico{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;margin-bottom:14px;color:var(--g2);background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(34,211,238,.1));border:1px solid rgba(124,92,255,.35);box-shadow:0 0 24px rgba(124,92,255,.18)}
+.chap-ico svg{width:26px;height:26px}
+.chapter-no{display:inline-block;font-weight:900;font-size:14px;letter-spacing:.14em;color:var(--g2);margin-bottom:4px}
+.chapter-head h2{font-size:clamp(26px,4vw,40px);line-height:1.2;margin:0 0 10px;font-weight:900;letter-spacing:-.03em}
+.chapter-lead{color:var(--mute);max-width:44em;margin:0;font-size:17.5px}
+.story{margin:22px 0 28px;padding:24px 30px;border-radius:var(--r);background:linear-gradient(135deg,rgba(124,92,255,.14),rgba(34,211,238,.07));border:1px solid rgba(124,92,255,.28)}
+.story h3{margin:0 0 10px;font-size:18px}
+.story p{margin:0;color:#dde1ee;max-width:46em;font-size:17px;line-height:1.85}
+/* 2열: 카드 본문 한 줄 약 30~40자 (한글 권장 범위) */
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,480px),1fr));gap:22px;align-items:start}
+/* 읽는 순서 고정: 제목 → 쉬운 설명 → 성과 연결 → (펼치면) 실무 → 공식 → 예시 → 주의 */
+.term{padding:26px 28px 22px;display:flex;flex-direction:column}
+.term-head{order:0} .term-easy{order:1} .term-why{order:2} .term-real{order:3} .formula{order:4} .term-example{order:5} .term-warn{order:6} .term-more{order:9}
+.term-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;cursor:pointer;position:relative;padding-right:30px;outline:none}
+.term-head::after{content:"";position:absolute;right:6px;top:44px;width:10px;height:10px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);transition:transform .25s;opacity:.7}
+.term.open .term-head::after{transform:rotate(-135deg);top:48px}
+.term-ko{margin:0;font-size:22px;font-weight:900;letter-spacing:-.02em}
+.term-en{color:var(--dim);font-size:14px}
+.term-level{order:-2;flex:0 0 auto;font-size:12.5px;font-weight:700;line-height:1.5;padding:1px 10px;border:1px solid currentColor;border-radius:999px}
+.term-head::before{content:"";order:-1;flex-basis:100%;height:0}
+.term.lv1 .term-level{color:var(--g3)} .term.lv2 .term-level{color:var(--g4)} .term.lv3 .term-level{color:var(--g5)}
+.term p{margin:12px 0 0;font-size:16px;line-height:1.75;color:#d3d8e6}
+.term p b{display:block;font-size:13px;font-weight:700;letter-spacing:0;color:var(--mute);margin-bottom:4px}
+.term-easy{font-size:17.5px !important;font-weight:500;color:var(--ink) !important;margin-top:14px !important}
+.term-easy b{color:var(--g2) !important}
+.formula{display:block;margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.18);font-family:var(--font);font-variant-numeric:tabular-nums;font-size:15px;line-height:1.65;color:#e6e9f5;white-space:normal}
+.term-why{margin-top:14px !important;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(52,211,153,.14),rgba(52,211,153,.03));border-left:3px solid var(--g3)}
+.term-why b{color:var(--g3) !important}
+.term-warn{padding:12px 14px;border-radius:12px;background:rgba(251,191,36,.08);border-left:3px solid var(--g4)}
+.term-warn b{color:var(--g4) !important}
+.term.open .term-real{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.term:not(.open) .term-real,.term:not(.open) .term-example,.term:not(.open) .term-warn,.term:not(.open) .formula{display:none}
+.term-more{align-self:flex-start;margin-top:16px;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(34,211,238,.35);background:rgba(34,211,238,.07);color:var(--g2);font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;transition:background .2s}
+.term-more:hover{background:rgba(34,211,238,.18)}
+.term.hide,.chapter.hide{display:none}
+.callout{margin:24px 0 0;padding:20px 24px;font-size:16.5px;border-radius:var(--r);background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.3);color:#e8dfc4}
+.callout b{color:var(--g4)}
+.table-scroll{overflow-x:auto;margin-top:22px;border-radius:var(--r)}
+.compare-table{width:100%;border-collapse:separate;border-spacing:0;font-size:15.5px;min-width:560px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.compare-table th,.compare-table td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.compare-table thead th{background:rgba(124,92,255,.18);font-size:13.5px;color:#e4defe}
+.compare-table tr:last-child td{border-bottom:0}
+.compare-table td:first-child{font-weight:700;color:var(--g2)}
+
+/* ---------- index & footer ---------- */
+.index{padding:64px 0 20px}
+.idx-groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.idx-g{padding:16px 18px}
+.idx-g h4{margin:0 0 8px;font-size:16px;color:var(--g1-text)}
+.idx-g a{display:block;text-decoration:none;color:#c4cad9;font-size:15px;padding:3px 0}
+.idx-g a:hover{color:var(--g2)}
+.empty{display:none;text-align:center;color:var(--mute);padding:70px 0}
+footer{margin-top:60px;padding:34px 0 60px;border-top:1px solid var(--line);color:var(--dim);font-size:14.5px}
+footer p{margin:4px 0}
+.totop{position:fixed;right:18px;bottom:18px;z-index:60;width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(16,19,29,.9);color:var(--ink);cursor:pointer;display:none;font-size:18px}
+.totop.show{display:block}
+
+@media (max-width:860px){
+  .steps,.qs{grid-template-columns:1fr}
+  .brand span{display:none}
+  .wrap{padding:0 16px}
+  .topbar .wrap{height:58px}
+  .chapnav{padding:8px 16px}
+  .term{padding:20px 18px 18px}
+  .term p{font-size:16px}
+  .story{padding:20px 20px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .glow::before,.glow::after{animation:none !important}
+  .term-head::after{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top"><i></i><span>재무기획팀 백과사전</span></a>
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="용어 검색 (예: 예산, EBITDA, 현금흐름)" aria-label="용어 검색" autocomplete="off" enterkeyhint="search">
+      <output id="qcount" aria-live="polite"></output>
+    </label>
+  </div>
+  <nav class="chapnav" id="chapnav" aria-label="챕터 이동"></nav>
+</header>
+
+<main id="top">
+<section class="hero wrap">
+  <span class="eyebrow">FP&amp;A ENCYCLOPEDIA</span>
+  <h1>숫자를 몰라도 괜찮아요,<br><span>재무기획팀</span> 이야기예요</h1>
+  <p class="sub">리더부터 신입사원까지, 중학교 1학년도 이해하도록 풀어 쓴 재무기획(FP&amp;A) 용어 사전. 모든 용어는 "그래서 회사 성과와 무슨 상관?"까지 연결해요.</p>
+  <div class="stats" id="stats"></div>
+  <div class="videowrap">
+<!--VIDEO-->
+  </div>
+</section>
+
+<section class="guide wrap">
+  <h2 class="section-title">이렇게 읽으면 돼요</h2>
+  <p class="section-sub">처음부터 끝까지 읽을 필요 없어요. 필요한 용어만 골라 보세요.</p>
+  <div class="steps">
+    <div class="step glow"><div class="n">STEP 1</div><h3>쉬운 설명부터</h3><p>카드의 첫 줄만 읽어도 뜻을 잡을 수 있어요. 녹색 박스는 "회사 성과와 연결" 포인트예요.</p></div>
+    <div class="step glow"><div class="n">STEP 2</div><h3>궁금하면 카드를 눌러요</h3><p>실제 업무에서의 쓰임, 가상의 예시, 헷갈리기 쉬운 점이 펼쳐져요.</p></div>
+    <div class="step glow"><div class="n">STEP 3</div><h3>검색·난이도로 찾기</h3><p>위 검색창이나 입문·기본·심화 필터로 원하는 용어를 바로 찾을 수 있어요.</p></div>
+  </div>
+
+  <h2 class="section-title" style="margin-top:56px">회의에서 재무기획팀에 던질 만한 질문 10개</h2>
+  <p class="section-sub">리더가 이 질문만 던져도 보고의 질이 달라져요. 아래 용어 버튼을 누르면 해당 설명으로 바로 이동해요.</p>
+  <div class="qs">
+    <div class="q glow"><span class="num">1</span><div><p>이 숫자가 예산·전년과 비교해 얼마나 다르고, 가장 큰 이유 한 가지는 뭐예요?</p><button class="qlink" data-q="차이">차이분석</button><button class="qlink" data-q="전년">전년 대비</button></div></div>
+    <div class="q glow"><span class="num">2</span><div><p>일회성 요인을 빼면 우리 회사의 진짜 체력은 어때요?</p><button class="qlink" data-q="일회성">일회성 항목</button></div></div>
+    <div class="q glow"><span class="num">3</span><div><p>이익은 났는데 현금은 왜 안 늘었죠? (또는 그 반대)</p><button class="qlink" data-q="현금흐름">현금흐름</button><button class="qlink" data-q="운전자본">운전자본</button></div></div>
+    <div class="q glow"><span class="num">4</span><div><p>이 계획이 기대는 핵심 가정 3가지는 뭐고, 틀리면 이익이 얼마나 흔들려요?</p><button class="qlink" data-q="가정">가정</button><button class="qlink" data-q="민감도">민감도 분석</button></div></div>
+    <div class="q glow"><span class="num">5</span><div><p>이 투자는 언제 원금을 회수하고, 기대대로 안 되면 어떻게 하죠?</p><button class="qlink" data-q="회수기간">회수기간</button><button class="qlink" data-q="NPV">NPV</button></div></div>
+    <div class="q glow"><span class="num">6</span><div><p>최악의 시나리오에서도 버틸 수 있어요? 자금은 충분해요?</p><button class="qlink" data-q="시나리오">시나리오</button><button class="qlink" data-q="유동">유동성</button></div></div>
+    <div class="q glow"><span class="num">7</span><div><p>매출이 변한 건 가격 때문인가요, 판매량 때문인가요, 제품 구성 때문인가요?</p><button class="qlink" data-q="믹스">가격·물량·믹스</button></div></div>
+    <div class="q glow"><span class="num">8</span><div><p>올해 마감 전망(추정실적)은 예산 대비 어디쯤이고, 지난번 전망 이후 무엇이 바뀌었나요?</p><button class="qlink" data-q="추정실적">추정실적</button><button class="qlink" data-q="롤링">롤링 포캐스트</button></div></div>
+    <div class="q glow"><span class="num">9</span><div><p>이 비용을 쓰면 어떤 지표가 얼마나 좋아지고, 누가 책임지나요?</p><button class="qlink" data-q="KPI">KPI</button><button class="qlink" data-q="ROI">ROI</button></div></div>
+    <div class="q glow"><span class="num">10</span><div><p>이번 달 숫자는 확정치인가요, 추정치인가요?</p><button class="qlink" data-q="결산">결산</button><button class="qlink" data-q="마감">마감</button></div></div>
+  </div>
+
+  <div class="controls">
+    <button class="chip" data-lv="all" aria-pressed="true">전체</button>
+    <button class="chip" data-lv="lv1" aria-pressed="false">입문</button>
+    <button class="chip" data-lv="lv2" aria-pressed="false">기본</button>
+    <button class="chip" data-lv="lv3" aria-pressed="false">심화</button>
+    <span class="grow"></span>
+    <span id="count" aria-live="polite"></span>
+    <button class="chip" id="toggleAll" aria-pressed="false">모두 펼치기</button>
+  </div>
+</section>
+
+<div class="wrap" id="chapters">
+<!--CHAPTERS-->
+  <div class="empty" id="empty">검색 결과가 없어요. 다른 단어로 찾아보세요 🙂</div>
+</div>
+
+<section class="index wrap" id="index">
+  <h2 class="section-title">가나다 찾아보기</h2>
+  <p class="section-sub">용어를 누르면 해당 카드로 이동해요.</p>
+  <div class="idx-groups" id="idx"></div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>※ 이 문서의 예시 숫자와 회사는 모두 학습용 가상 사례예요. 실제 정의·기준·승인 절차는 회사마다 다를 수 있으니, 실무 적용 전에는 사내 재무기획팀의 기준을 꼭 확인하세요.</p>
+    <p>※ 영상의 음악은 브라우저에서 실시간으로 합성한 것으로 외부 음원 파일을 사용하지 않아요.</p>
+  </div>
+</footer>
+<button class="totop" id="totop" aria-label="맨 위로">↑</button>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var terms=$$('.term'), chapters=$$('.chapter');
+  terms.forEach(function(t){
+    t.classList.add('glow');
+    var h=$('.term-head',t); if(!h) return;
+    h.setAttribute('tabindex','0'); h.setAttribute('role','button'); h.setAttribute('aria-expanded','false');
+    var mb=document.createElement('button'); mb.type='button'; mb.className='term-more'; t.appendChild(mb);
+    var sync=t._sync=function(){var o=t.classList.contains('open'); h.setAttribute('aria-expanded',o); mb.setAttribute('aria-expanded',o); mb.textContent=o?'접기 ▴':'실무 · 예시 · 주의점 보기 ▾'};
+    var tog=function(){t.classList.toggle('open'); sync()};
+    sync(); mb.addEventListener('click',tog);
+    h.addEventListener('click',tog);
+    h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog()}});
+    t.dataset.text=(t.textContent||'').toLowerCase().replace(/\s+/g,' ');
+  });
+
+  // 챕터 아이콘(라인 아이콘 1개씩, 절제)
+  var ICO={
+    1:'<circle cx="12" cy="8" r="3.2"/><circle cx="5" cy="10" r="2.2"/><circle cx="19" cy="10" r="2.2"/><path d="M6.5 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5M1.5 18c.3-2 1.6-3.3 3.5-3.3M22.5 18c-.3-2-1.6-3.3-3.5-3.3"/>',
+    2:'<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14h3M8 17h6"/>',
+    3:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/><path d="M4 7l6-4 6 7 5-3"/>',
+    4:'<rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/>',
+    5:'<path d="M12 3v18M5 21h14M4 7h16"/><path d="M4 7l-2.5 6a2.5 2.5 0 0 0 5 0zM20 7l-2.5 6a2.5 2.5 0 0 0 5 0z"/>',
+    6:'<path d="M12 3l7.5 3v5.5c0 4.5-3.2 8-7.5 9.5-4.3-1.5-7.5-5-7.5-9.5V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>'
+  };
+  chapters.forEach(function(c){
+    var h=$('.chapter-head',c), k=c.dataset.chapter||c.id.replace(/\D/g,'');
+    if(h&&ICO[k]){var s=document.createElement('span');s.className='chap-ico';s.setAttribute('aria-hidden','true');
+      s.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+ICO[k]+'</svg>';h.insertBefore(s,h.firstChild)}
+  });
+
+  // nav + stats
+  var nav=$('#chapnav');
+  chapters.forEach(function(c){
+    var a=document.createElement('a'); a.href='#'+c.id;
+    var no=$('.chapter-no',c), h2=$('h2',c);
+    a.textContent=(no?no.textContent+' ':'')+(h2?h2.textContent.split(':')[0].trim():c.id); a.title=h2?h2.textContent:''; nav.appendChild(a);
+  });
+  var ia=document.createElement('a'); ia.href='#index'; ia.textContent='가나다 찾아보기'; nav.appendChild(ia);
+  $('#stats').innerHTML='<b><em>'+terms.length+'</em>개 용어</b><b><em>'+chapters.length+'</em>개 챕터</b><b>30초 영상</b><b>쉬운 말 · 성과 연결</b>';
+
+  // filter / search
+  var lv='all', qEl=$('#q'), cnt=$('#count');
+  function apply(){
+    var q=qEl.value.trim().toLowerCase(), n=0;
+    terms.forEach(function(t){
+      var ok=(lv==='all'||t.classList.contains(lv))&&(!q||t.dataset.text.indexOf(q)>-1);
+      t.classList.toggle('hide',!ok); if(ok) n++;
+    });
+    chapters.forEach(function(c){c.classList.toggle('hide',!$$('.term:not(.hide)',c).length)});
+    cnt.textContent=n+'개 용어';
+    $('#qcount').textContent=q?n+'개':'';
+    $('#empty').style.display=n?'none':'block';
+  }
+  function flash(t){t.classList.add('open','live'); if(t._sync)t._sync(); setTimeout(function(){t.classList.remove('live')},2500)}
+  qEl.addEventListener('input',apply);
+  qEl.addEventListener('keydown',function(e){
+    if(e.key!=='Enter') return; e.preventDefault(); qEl.blur();
+    var f=$('.term:not(.hide)'); if(f){f.scrollIntoView({behavior:'smooth',block:'start'}); flash(f)}
+  });
+  $$('.chip[data-lv]').forEach(function(b){b.addEventListener('click',function(){
+    lv=b.dataset.lv; $$('.chip[data-lv]').forEach(function(x){x.setAttribute('aria-pressed',x===b)}); apply();
+  })});
+  var all=false;
+  $('#toggleAll').addEventListener('click',function(e){
+    all=!all; terms.forEach(function(t){t.classList.toggle('open',all); if(t._sync)t._sync()});
+    document.body.classList.toggle('all-open',all);
+    e.target.setAttribute('aria-pressed',all); e.target.textContent=all?'모두 접기':'모두 펼치기';
+  });
+  $$('.qlink').forEach(function(b){b.addEventListener('click',function(){
+    qEl.value=b.dataset.q; lv='all'; $$('.chip[data-lv]').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.lv==='all')}); apply();
+    var f=$('.term:not(.hide)'); if(f){f.scrollIntoView({behavior:'smooth',block:'start'}); flash(f)}
+  })});
+
+  // 가나다 index
+  var LIM=['가','나','다','라','마','바','사','아','자','차','카','타','파','하'], MAP=[0,0,1,2,2,3,4,5,5,6,6,7,8,8,9,10,11,12,13];
+  function cho(s){
+    var code=s.trim().charCodeAt(0);
+    if(code>=0xAC00&&code<=0xD7A3) return LIM[MAP[Math.floor((code-0xAC00)/588)]];
+    return 'A–Z';
+  }
+  $$('.compare-table').forEach(function(t){if(!t.parentNode.classList.contains('table-scroll')){var w=document.createElement('div');w.className='table-scroll';t.parentNode.insertBefore(w,t);w.appendChild(t)}});
+  var groups={};
+  terms.forEach(function(t){var k=t.dataset.ko||($('.term-ko',t)||{}).textContent||''; if(!k) return; var g=/^[A-Za-z0-9]/.test(k)?'A–Z':cho(k); (groups[g]=groups[g]||[]).push({k:k,id:t.id})});
+  var order=LIM.concat(['A–Z']), idx=$('#idx');
+  order.forEach(function(g){
+    if(!groups[g]) return;
+    var d=document.createElement('div'); d.className='idx-g glow'; d.innerHTML='<h4>'+g+'</h4>';
+    groups[g].sort(function(a,b){return a.k.localeCompare(b.k,'ko')}).forEach(function(x){
+      var a=document.createElement('a'); a.href='#'+x.id; a.textContent=x.k;
+      a.addEventListener('click',function(){qEl.value=''; apply(); var t=document.getElementById(x.id); if(t) flash(t)});
+      d.appendChild(a);
+    }); idx.appendChild(d);
+  });
+
+  // progress, scrollspy, to-top
+  var bar=$('#progress'), top=$('#totop'), links=$$('#chapnav a'), tb=$('.topbar');
+  function setPad(){document.documentElement.style.scrollPaddingTop=(tb.offsetHeight+16)+'px'}
+  setPad(); addEventListener('resize',setPad);
+  function onScroll(){
+    var h=document.documentElement, p=h.scrollTop/(h.scrollHeight-h.clientHeight||1); bar.style.width=(p*100)+'%';
+    top.classList.toggle('show',h.scrollTop>900);
+    var cur=null, lim=tb.offsetHeight+24; chapters.forEach(function(c){if(c.getBoundingClientRect().top<lim) cur=c.id});
+    links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur)});
+  }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  top.addEventListener('click',function(){scrollTo({top:0,behavior:'smooth'})});
+  apply();
+})();
+</script>
+</body>
+</html>

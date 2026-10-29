@@ -1,0 +1,693 @@
+<style>
+@property --hv-ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes hv-spin{to{--hv-ang:360deg}}
+@keyframes hv-pulse{0%{box-shadow:0 0 0 0 rgba(124,92,255,.55),0 8px 40px rgba(34,211,238,.25)}100%{box-shadow:0 0 0 2.6cqw rgba(124,92,255,0),0 8px 40px rgba(34,211,238,.25)}}
+#hv{--bg:#07080d;--card:#10131d;--ink:#eef0f7;--mute:#9aa1b5;--c1:#7c5cff;--c2:#22d3ee;--c3:#34d399;--c4:#fbbf24;--c5:#fb7185;
+  position:relative;width:100%;max-width:1100px;margin:0 auto;color:var(--ink);
+  font-family:'Noto Sans KR','Pretendard','Malgun Gothic',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-align:left}
+#hv *,#hv *::before,#hv *::after{box-sizing:border-box}
+#hv .hv-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* glow border */
+#hv-frame{position:relative;border-radius:22px;padding:2px;isolation:isolate;
+  background:conic-gradient(from var(--hv-ang),#7c5cff,#22d3ee,#34d399,#fbbf24,#fb7185,#7c5cff);animation:hv-spin 9s linear infinite}
+#hv-frame::before{content:"";position:absolute;inset:-4px;border-radius:26px;z-index:-1;opacity:.55;filter:blur(22px);
+  background:conic-gradient(from var(--hv-ang),#7c5cff,#22d3ee,#34d399,#fbbf24,#fb7185,#7c5cff);animation:hv-spin 9s linear infinite}
+
+#hv-stage{position:relative;width:100%;max-width:1100px;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:var(--bg);container-type:inline-size;user-select:none;-webkit-user-select:none}
+#hv .hv-bg{position:absolute;inset:0;overflow:hidden}
+#hv .hv-blob{position:absolute;display:block;border-radius:50%;will-change:transform}
+#hv .hv-b1{width:70cqw;height:70cqw;left:-18cqw;top:-30cqw;background:radial-gradient(closest-side,rgba(124,92,255,.42),rgba(124,92,255,0))}
+#hv .hv-b2{width:64cqw;height:64cqw;right:-16cqw;top:-8cqw;background:radial-gradient(closest-side,rgba(34,211,238,.28),rgba(34,211,238,0))}
+#hv .hv-b3{width:60cqw;height:60cqw;left:22cqw;bottom:-36cqw;background:radial-gradient(closest-side,rgba(52,211,153,.24),rgba(251,113,133,.06) 70%,rgba(52,211,153,0))}
+#hv .hv-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:4.4cqw 4.4cqw;-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 25%,transparent 78%);mask-image:radial-gradient(ellipse at 50% 50%,#000 25%,transparent 78%)}
+
+#hv .hv-sc{position:absolute;inset:0;opacity:0;visibility:hidden;transform-origin:50% 50%}
+#hv .hv-svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
+#hv .hv-svg text{font-family:inherit}
+#hv .hv-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center}
+#hv .hv-tw{transform-origin:50% 50%}
+#hv .hv-title{position:relative;display:inline-block;font-size:clamp(34px,13.5cqw,152px);font-weight:900;letter-spacing:-.03em;line-height:1.08;white-space:nowrap}
+#hv .hv-tglow{position:absolute;inset:0;opacity:0;background:linear-gradient(90deg,#7c5cff,#22d3ee 55%,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent;filter:blur(.14em)}
+#hv .hv-tt{position:relative}
+#hv .hv-tt span{display:inline-block;opacity:0;background:linear-gradient(90deg,#fff 0%,#d6ccff 35%,#9aeeff 70%,#b8f7de 100%);background-size:500% 100%;background-position:calc(var(--i)*25%) 0;-webkit-background-clip:text;background-clip:text;color:transparent}
+#hv .hv-sub{margin-top:1.2cqw;font-size:clamp(12px,3cqw,34px);color:#cfd5e8;font-weight:500;opacity:0;white-space:nowrap;word-break:keep-all}
+#hv .hv-sub b{font-weight:800;color:var(--c4)}
+#hv .hv-sweep{height:2px;width:30cqw;margin:1.8cqw auto 0;border-radius:2px;background:linear-gradient(90deg,transparent,#22d3ee,#7c5cff,transparent);transform:scaleX(0)}
+
+#hv .hv-head{position:absolute;left:0;right:0;top:2.4cqw;text-align:center;pointer-events:none}
+#hv .hv-kick{display:inline-block;font-size:clamp(8px,1.5cqw,17px);letter-spacing:.12em;color:var(--mute);padding:.3em 1em;border:1px solid rgba(255,255,255,.14);border-radius:99px;background:rgba(255,255,255,.04)}
+#hv .hv-h2{margin:.5cqw 0 0;font-size:clamp(15px,3.8cqw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.15;background:linear-gradient(90deg,#fff,#c3cdf5);-webkit-background-clip:text;background-clip:text;color:transparent}
+#hv .hv-h2 em{font-style:normal;background:linear-gradient(90deg,#fbbf24,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent}
+#hv .hv-cap{position:absolute;left:5%;right:5%;bottom:3cqw;text-align:center;font-size:clamp(10px,2.3cqw,26px);line-height:1.4;font-weight:500;color:#e2e6f3;word-break:keep-all;text-wrap:balance;text-shadow:0 1px 14px rgba(0,0,0,.85);opacity:0}
+#hv .hv-cap b{color:#fff;font-weight:800}
+#hv .hv-badge{position:absolute;right:2.6cqw;top:2.6cqw;font-size:clamp(8px,1.25cqw,14px);color:var(--c4);border:1px dashed rgba(251,191,36,.55);padding:.3em .8em;border-radius:99px;background:rgba(251,191,36,.07);white-space:nowrap}
+
+#hv .hv-pill{position:absolute;left:50%;top:40%;padding:.28em .85em;border-radius:99px;font-weight:800;font-size:clamp(13px,5cqw,56px);color:#fff;white-space:nowrap;
+  background:rgba(16,19,29,.88);border:2px solid var(--pc);box-shadow:0 0 2.2cqw var(--pg),inset 0 0 1.3cqw var(--pg);opacity:0;will-change:transform}
+#hv .hv-dotm{position:absolute;left:50%;top:40%;font-size:clamp(16px,6cqw,70px);font-weight:900;color:var(--mute);opacity:0;line-height:1}
+#hv .hv-orb{position:absolute;left:50%;top:47%;width:34cqw;height:34cqw;margin:-17cqw 0 0 -17cqw;border-radius:50%;opacity:0;background:radial-gradient(closest-side,rgba(124,92,255,.55),rgba(34,211,238,.25) 55%,rgba(34,211,238,0))}
+#hv .hv-ring{position:absolute;left:50%;top:47%;width:30cqw;height:30cqw;margin:-15cqw 0 0 -15cqw;border-radius:50%;border:2px solid rgba(255,255,255,.7);opacity:0}
+#hv .hv-eq{position:absolute;left:0;right:0;top:47%;text-align:center;transform:translateY(-50%);font-size:clamp(20px,9.4cqw,106px);font-weight:900;letter-spacing:-.03em;line-height:1.1;opacity:0;white-space:nowrap}
+#hv .hv-eq i{font-style:normal;color:var(--c4);margin-right:.18em}
+#hv .hv-eq span{background:linear-gradient(90deg,#fff,#9aeeff 55%,#b8f7de);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+#hv #hv-fade{position:absolute;inset:0;background:var(--bg);opacity:0;pointer-events:none;z-index:10}
+#hv #hv-overlay{position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw;
+  background:radial-gradient(ellipse at 50% 55%,rgba(7,8,13,.15),rgba(7,8,13,.62))}
+#hv #hv-big{appearance:none;-webkit-appearance:none;cursor:pointer;border:0;border-radius:99px;padding:.7em 1.5em;font:inherit;font-weight:800;font-size:clamp(14px,2.7cqw,30px);color:#07080d;
+  background:linear-gradient(135deg,#a99bff,#22d3ee 60%,#34d399);animation:hv-pulse 1.8s ease-out infinite;transition:transform .15s}
+#hv #hv-big:hover{transform:scale(1.04)}
+#hv #hv-hint{font-size:clamp(9px,1.5cqw,17px);color:#cfd5e8;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+
+#hv #hv-controls{display:flex;align-items:center;gap:.6rem;margin-top:16px;padding:.55rem .8rem;background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:14px}
+#hv #hv-controls button{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--ink);font:inherit;font-size:16px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0;transition:background .15s,transform .15s}
+#hv #hv-controls button:hover{background:rgba(255,255,255,.14)}
+#hv #hv-controls button:active{transform:scale(.94)}
+#hv #hv-controls #hv-play{background:linear-gradient(135deg,#7c5cff,#22d3ee);border-color:transparent;color:#07080d;font-weight:800}
+#hv button:focus-visible,#hv input:focus-visible{outline:2px solid #22d3ee;outline-offset:2px}
+#hv #hv-seek{--p:0%;-webkit-appearance:none;appearance:none;flex:1 1 auto;min-width:60px;height:24px;margin:0 .3rem;background:transparent;cursor:pointer}
+#hv #hv-seek::-webkit-slider-runnable-track{height:6px;border-radius:6px;background:linear-gradient(90deg,#7c5cff,#22d3ee) no-repeat 0 0/var(--p) 100%,rgba(255,255,255,.14)}
+#hv #hv-seek::-moz-range-track{height:6px;border-radius:6px;background:rgba(255,255,255,.14)}
+#hv #hv-seek::-moz-range-progress{height:6px;border-radius:6px;background:linear-gradient(90deg,#7c5cff,#22d3ee)}
+#hv #hv-seek::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;margin-top:-5px;box-shadow:0 0 0 3px rgba(124,92,255,.5),0 0 12px rgba(34,211,238,.7)}
+#hv #hv-seek::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(124,92,255,.5),0 0 12px rgba(34,211,238,.7)}
+#hv #hv-time{flex:none;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums;min-width:5.6em;text-align:right}
+@media (max-width:480px){#hv #hv-controls{gap:.4rem;padding:.5rem}#hv #hv-controls button{width:36px;height:36px}#hv #hv-time{font-size:12px;min-width:5em}}
+@media (prefers-reduced-motion:reduce){#hv-frame,#hv-frame::before,#hv #hv-big{animation:none}}
+#hv.hv-rm #hv-frame,#hv.hv-rm #hv-frame::before,#hv.hv-rm #hv-big{animation:none}
+</style>
+
+<div id="hv" role="region" aria-label="재무기획팀 소개 30초 모션그래픽 영상">
+  <div id="hv-frame">
+    <div id="hv-stage">
+      <p class="hv-sr">재무기획팀은 회사의 돈 지도를 그리는 팀입니다. 계획, 실행, 점검의 사이클로 살림을 관리하고, 매출과 이익과 현금이 서로 다르다는 것을 숫자로 설명하며, 투자해도 되는지 저울에 올려 판단합니다. 계획과 분석과 의사결정은 결국 회사 성과로 이어집니다.</p>
+      <div class="hv-bg" aria-hidden="true"><i class="hv-blob hv-b1" id="hv-b1"></i><i class="hv-blob hv-b2" id="hv-b2"></i><i class="hv-blob hv-b3" id="hv-b3"></i><i class="hv-grid"></i></div>
+
+      <section class="hv-sc" id="hv-s1" aria-hidden="true">
+        <svg class="hv-svg" id="hv-v1" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"></svg>
+        <div class="hv-center"><div class="hv-tw" id="hv-tw">
+          <div class="hv-title"><div class="hv-tglow" id="hv-tglow">재무기획팀</div>
+            <div class="hv-tt" id="hv-tt"><span style="--i:0">재</span><span style="--i:1">무</span><span style="--i:2">기</span><span style="--i:3">획</span><span style="--i:4">팀</span></div></div>
+          <div class="hv-sub" id="hv-sub">회사의 <b>돈 지도</b>를 그리는 사람들</div>
+          <div class="hv-sweep" id="hv-sweep"></div>
+        </div></div>
+      </section>
+
+      <section class="hv-sc" id="hv-s2" aria-hidden="true">
+        <div class="hv-head" id="hv-h2a"><span class="hv-kick">한 해 살림 사이클</span><h2 class="hv-h2">계획 → 실행 → 점검</h2></div>
+        <svg class="hv-svg" id="hv-v2" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="hv-cap" id="hv-c2">내년 살림을 <b>미리 짜고</b>, 매달 <b>맞게 가고 있는지</b> 확인해요</div>
+      </section>
+
+      <section class="hv-sc" id="hv-s3" aria-hidden="true">
+        <div class="hv-head" id="hv-h3a"><span class="hv-kick">숫자로 이야기하기</span><h2 class="hv-h2">매출 <em>≠</em> 이익 <em>≠</em> 현금</h2></div>
+        <div class="hv-badge">예시 · 가상의 숫자예요</div>
+        <svg class="hv-svg" id="hv-v3" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="hv-cap" id="hv-c3">많이 팔아도 <b>남는 돈</b>과 <b>통장 속 돈</b>은 달라요</div>
+      </section>
+
+      <section class="hv-sc" id="hv-s4" aria-hidden="true">
+        <div class="hv-head" id="hv-h4a"><span class="hv-kick">투자 결정</span><h2 class="hv-h2">투자해도 될까?</h2></div>
+        <div class="hv-badge">예시 · 비교용 그림이에요</div>
+        <svg class="hv-svg" id="hv-v4" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="hv-cap" id="hv-c4"><b>쓸 돈</b>과 <b>벌 돈</b>을 저울에 올려요</div>
+      </section>
+
+      <section class="hv-sc" id="hv-s5" aria-hidden="true">
+        <i class="hv-orb" id="hv-orb"></i><i class="hv-ring" id="hv-ring"></i>
+        <div class="hv-dotm" id="hv-dm0">·</div><div class="hv-dotm" id="hv-dm1">·</div>
+        <div class="hv-pill" id="hv-p0" style="--pc:#7c5cff;--pg:rgba(124,92,255,.5)">계획</div>
+        <div class="hv-pill" id="hv-p1" style="--pc:#22d3ee;--pg:rgba(34,211,238,.45)">분석</div>
+        <div class="hv-pill" id="hv-p2" style="--pc:#34d399;--pg:rgba(52,211,153,.45)">의사결정</div>
+        <div class="hv-eq" id="hv-eq"><i>=</i><span>회사 성과</span></div>
+        <div class="hv-cap" id="hv-c5">재무기획팀의 모든 일은 결국 <b>회사 성과</b>로 이어져요</div>
+      </section>
+
+      <div id="hv-fade"></div>
+      <div id="hv-overlay"><button id="hv-big" type="button" aria-label="영상 재생">▶</button><div id="hv-hint" style="display:none"></div></div>
+    </div>
+  </div>
+  <div id="hv-controls" role="group" aria-label="영상 컨트롤">
+    <button id="hv-play" type="button" aria-label="재생">▶</button>
+    <button id="hv-restart" type="button" aria-label="처음부터 다시 재생">↺</button>
+    <button id="hv-mute" type="button" aria-label="소리 끄기" aria-pressed="false">🔊</button>
+    <input id="hv-seek" type="range" min="0" max="30" step="0.01" value="1.5" aria-label="재생 위치">
+    <span id="hv-time">0:01 / 0:30</span>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var root=document.getElementById('hv');
+if(!root||root.getAttribute('data-hv-init'))return;
+root.setAttribute('data-hv-init','1');
+var $=function(id){return document.getElementById(id);};
+var DUR=30,NS='http://www.w3.org/2000/svg',LEAD=0.1;
+var rm=false;try{rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+if(rm)root.classList.add('hv-rm');
+
+/* ---------- helpers ---------- */
+function clamp01(x){return x<0?0:x>1?1:x;}
+function seg(t,a,b){return clamp01((t-a)/(b-a));}
+function lerp(a,b,p){return a+(b-a)*p;}
+function eo3(p){return 1-Math.pow(1-p,3);}
+function eio3(p){return p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;}
+function eob(p){var c1=1.70158,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2);}
+function mk(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs){e.setAttribute(k,attrs[k]);}if(parent)parent.appendChild(e);return e;}
+function fmt(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+var COLS=['#7c5cff','#22d3ee','#34d399','#fbbf24','#fb7185'];
+var D2R=Math.PI/180;
+
+/* ---------- scene 1 : money map ---------- */
+var v1=$('hv-v1');
+var d1=mk('defs',{},v1);
+var lg1=mk('linearGradient',{id:'hv-lg1',x1:0,y1:0,x2:1600,y2:0,gradientUnits:'userSpaceOnUse'},d1);
+mk('stop',{offset:'0','stop-color':'#7c5cff'},lg1);mk('stop',{offset:'.5','stop-color':'#22d3ee'},lg1);mk('stop',{offset:'1','stop-color':'#34d399'},lg1);
+var N1=[[180,300],[400,650],[610,250],[860,610],[1090,260],[1330,620],[1440,330]];
+var L1=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[1,3],[3,5],[2,4]];
+var lines1=L1.map(function(p){
+  var a=N1[p[0]],b=N1[p[1]],len=Math.sqrt(Math.pow(b[0]-a[0],2)+Math.pow(b[1]-a[1],2));
+  var e=mk('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'url(#hv-lg1)','stroke-width':2.5,'stroke-linecap':'round','stroke-dasharray':len,'stroke-dashoffset':len,opacity:.5},v1);
+  return {e:e,len:len};
+});
+var nodes1=N1.map(function(p,i){
+  var g=mk('g',{transform:'translate('+p[0]+' '+p[1]+')'},v1);
+  var h=mk('circle',{r:0,fill:COLS[i%5],opacity:.2},g);
+  var c=mk('circle',{r:0,fill:COLS[i%5],opacity:.9},g);
+  return {h:h,c:c};
+});
+var tw=$('hv-tw'),tglow=$('hv-tglow'),tchars=$('hv-tt').children,sub=$('hv-sub'),sweep=$('hv-sweep');
+function r1(lt){
+  var i,p;
+  for(i=0;i<lines1.length;i++){p=eio3(seg(lt,.15+.2*i,.15+.2*i+.9));lines1[i].e.style.strokeDashoffset=(lines1[i].len*(1-p)).toFixed(1);}
+  for(i=0;i<nodes1.length;i++){p=eob(seg(lt,.1+.22*i,.6+.22*i));nodes1[i].c.setAttribute('r',(9*p).toFixed(2));nodes1[i].h.setAttribute('r',(30*p).toFixed(2));}
+  for(i=0;i<tchars.length;i++){
+    p=eo3(seg(lt,.15+.1*i,.85+.1*i));
+    var s=tchars[i].style;s.opacity=p.toFixed(3);
+    s.transform='translateY('+((1-p)*3.5).toFixed(2)+'cqw) scale('+lerp(.85,1,p).toFixed(3)+')';
+    s.filter=p>=1?'none':'blur('+((1-p)*14).toFixed(1)+'px)';
+  }
+  tglow.style.opacity=(seg(lt,.3,1.3)*(.6+.25*Math.sin(lt*2.4))).toFixed(3);
+  tw.style.transform='scale('+lerp(1.06,1,eo3(seg(lt,0,4))).toFixed(4)+')';
+  p=eo3(seg(lt,1.1,1.9));
+  sub.style.opacity=p.toFixed(3);sub.style.transform='translateY('+((1-p)*1.5).toFixed(2)+'cqw)';sub.style.letterSpacing=lerp(.3,.03,p).toFixed(3)+'em';
+  sweep.style.transform='scaleX('+eo3(seg(lt,1.0,2.2)).toFixed(3)+')';
+}
+
+/* ---------- scene 2 : plan-do-check cycle ---------- */
+var v2=$('hv-v2');
+var C2={cx:800,cy:470,R:200,r:82};
+var A2=[-90,30,150];
+function pt2(a){return [C2.cx+C2.R*Math.cos(a*D2R),C2.cy+C2.R*Math.sin(a*D2R)];}
+var ring2=mk('circle',{cx:C2.cx,cy:C2.cy,r:C2.R,fill:'none',stroke:'rgba(255,255,255,.1)','stroke-width':2,'stroke-dasharray':'4 12','stroke-linecap':'round',opacity:0},v2);
+var cTxt=mk('text',{x:C2.cx,y:C2.cy-4,'text-anchor':'middle','font-size':44,'font-weight':800,fill:'#eef0f7',opacity:0},v2);cTxt.textContent='1년 살림';
+var cTxt2=mk('text',{x:C2.cx,y:C2.cy+40,'text-anchor':'middle','font-size':26,fill:'#9aa1b5',opacity:0},v2);cTxt2.textContent='매달 한 바퀴 ↻';
+var ND2=[{t:'계획·예산',s:'내년 돈 계획',c:COLS[0]},{t:'실행',s:'계획대로 쓰기',c:COLS[1]},{t:'실적 점검',s:'잘 가는지 보기',c:COLS[2]}];
+var arcs2=ND2.map(function(n,i){
+  var a1=A2[i]+30,a2=A2[(i+1)%3]-30;if(a2<a1)a2+=360;
+  var p1=pt2(a1),p2=pt2(a2),len=C2.R*(a2-a1)*D2R;
+  var path=mk('path',{d:'M'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+' A'+C2.R+' '+C2.R+' 0 0 1 '+p2[0].toFixed(1)+' '+p2[1].toFixed(1),fill:'none',stroke:n.c,'stroke-width':6,'stroke-linecap':'round','stroke-dasharray':len,'stroke-dashoffset':len},v2);
+  var ar=mk('polygon',{points:'-10,-11 14,0 -10,11',fill:n.c,opacity:0,transform:'translate('+p2[0].toFixed(1)+' '+p2[1].toFixed(1)+') rotate('+(a2+90)+')'},v2);
+  return {path:path,ar:ar,len:len};
+});
+var nodes2=ND2.map(function(n,i){
+  var p=pt2(A2[i]);
+  var g=mk('g',{transform:'translate('+p[0].toFixed(1)+' '+p[1].toFixed(1)+') scale(.001)'},v2);
+  var halo=mk('circle',{r:C2.r+16,fill:n.c,opacity:.15},g);
+  var c=mk('circle',{r:C2.r,fill:'#10131d',stroke:n.c,'stroke-width':4},g);
+  var num=mk('text',{x:0,y:-34,'text-anchor':'middle','font-size':22,'font-weight':800,fill:n.c},g);num.textContent='0'+(i+1);
+  var t=mk('text',{x:0,y:8,'text-anchor':'middle','font-size':n.t.length>4?29:34,'font-weight':800,fill:'#fff'},g);t.textContent=n.t;
+  var s=mk('text',{x:0,y:40,'text-anchor':'middle','font-size':18,fill:'#9aa1b5'},g);s.textContent=n.s;
+  return {g:g,halo:halo,c:c,x:p[0],y:p[1]};
+});
+var dot2=[0,1,2,3].map(function(k){return mk('circle',{r:[13,10,8,6][k],fill:k?COLS[1]:'#fff',opacity:0},v2);});
+var dotHalo=mk('circle',{r:28,fill:'#22d3ee',opacity:0},v2);
+var h2a=$('hv-h2a'),c2=$('hv-c2');
+function headIn(h,lt){var p=eo3(seg(lt,.1,.7));h.style.opacity=p.toFixed(3);h.style.transform='translateY('+((1-p)*-1.6).toFixed(2)+'cqw)';}
+function capIn(c,lt,st){var p=eo3(seg(lt,st,st+.6));c.style.opacity=p.toFixed(3);c.style.transform='translateY('+((1-p)*1.2).toFixed(2)+'cqw)';}
+function angDist(a,b){var d=(((a-b)%360)+720)%360;return d>180?360-d:d;}
+function r2(lt){
+  var i,p;
+  headIn(h2a,lt);capIn(c2,lt,1.0);
+  ring2.setAttribute('opacity',(.9*seg(lt,.8,1.6)).toFixed(3));
+  var tx=seg(lt,1.0,1.8);cTxt.setAttribute('opacity',tx.toFixed(3));cTxt2.setAttribute('opacity',tx.toFixed(3));
+  var dotOn=seg(lt,2.6,3.0),th=-90+140*(lt-2.6);
+  for(i=0;i<3;i++){
+    p=eio3(seg(lt,1.5+.45*i,2.2+.45*i));
+    arcs2[i].path.style.strokeDashoffset=(arcs2[i].len*(1-p)).toFixed(1);
+    arcs2[i].ar.setAttribute('opacity',clamp01((p-.85)/.15).toFixed(3));
+    var h=dotOn*clamp01(1-angDist(th,A2[i])/38);
+    var sc=Math.max(.001,eob(seg(lt,.3+.5*i,.9+.5*i)))*(1+.09*h);
+    nodes2[i].g.setAttribute('transform','translate('+nodes2[i].x.toFixed(1)+' '+nodes2[i].y.toFixed(1)+') scale('+sc.toFixed(3)+')');
+    nodes2[i].halo.setAttribute('opacity',(.12+.45*h).toFixed(3));
+    nodes2[i].c.setAttribute('stroke-width',(4+5*h).toFixed(2));
+  }
+  for(i=0;i<4;i++){
+    var a=(th-i*7)*D2R;
+    dot2[i].setAttribute('cx',(C2.cx+C2.R*Math.cos(a)).toFixed(1));dot2[i].setAttribute('cy',(C2.cy+C2.R*Math.sin(a)).toFixed(1));
+    dot2[i].setAttribute('opacity',(dotOn*[1,.55,.32,.16][i]).toFixed(3));
+  }
+  dotHalo.setAttribute('cx',(C2.cx+C2.R*Math.cos(th*D2R)).toFixed(1));dotHalo.setAttribute('cy',(C2.cy+C2.R*Math.sin(th*D2R)).toFixed(1));dotHalo.setAttribute('opacity',(dotOn*.3).toFixed(3));
+}
+
+/* ---------- scene 3 : revenue / profit / cash ---------- */
+var v3=$('hv-v3');
+var d3=mk('defs',{},v3);
+var bl3=mk('filter',{id:'hv-bl3',x:'-50%',y:'-50%',width:'200%',height:'200%'},d3);mk('feGaussianBlur',{stdDeviation:16},bl3);
+var BASE3=640,MAXH=350;
+var BARS=[{k:'매출',sub:'물건 판 돈',v:800,c:COLS[0],x:400,t0:.7},{k:'이익',sub:'비용 빼고 남은 돈',v:160,c:COLS[2],x:800,t0:2.5},{k:'현금',sub:'통장에 들어온 돈',v:100,c:COLS[1],x:1200,t0:4.2}];
+mk('line',{x1:190,y1:BASE3,x2:1410,y2:BASE3,stroke:'rgba(255,255,255,.2)','stroke-width':2},v3);
+BARS.forEach(function(b,i){
+  var lgd=mk('linearGradient',{id:'hv-bg3'+i,x1:0,y1:0,x2:0,y2:1},d3);
+  mk('stop',{offset:'0','stop-color':b.c},lgd);mk('stop',{offset:'1','stop-color':b.c,'stop-opacity':.45},lgd);
+  b.glow=mk('rect',{x:b.x-115,y:BASE3,width:230,height:0,rx:16,fill:b.c,opacity:.45,filter:'url(#hv-bl3)'},v3);
+  b.rect=mk('rect',{x:b.x-115,y:BASE3,width:230,height:0,rx:16,fill:'url(#hv-bg3'+i+')'},v3);
+  b.num=mk('text',{x:b.x,y:BASE3-30,'text-anchor':'middle','font-size':56,'font-weight':800,fill:'#fff',opacity:0},v3);
+  b.lab=mk('text',{x:b.x,y:BASE3+54,'text-anchor':'middle','font-size':40,'font-weight':800,fill:'#eef0f7',opacity:0},v3);b.lab.textContent=b.k;
+  b.sl=mk('text',{x:b.x,y:BASE3+88,'text-anchor':'middle','font-size':24,fill:'#9aa1b5',opacity:0},v3);b.sl.textContent=b.sub;
+});
+var NE=[{x:600,t:'비용 빼면',t0:2.2},{x:1000,t:'받은 돈만',t0:3.9}].map(function(o){
+  var g=mk('g',{transform:'translate('+o.x+' 560) scale(.001)'},v3);
+  var s=mk('text',{x:0,y:0,'text-anchor':'middle','font-size':96,'font-weight':900,fill:'#fbbf24'},g);s.textContent='≠';
+  var t=mk('text',{x:0,y:-86,'text-anchor':'middle','font-size':24,fill:'#9aa1b5'},g);t.textContent=o.t;
+  o.g=g;return o;
+});
+var h3a=$('hv-h3a'),c3=$('hv-c3');
+function r3(lt){
+  headIn(h3a,lt);capIn(c3,lt,1.2);
+  BARS.forEach(function(b){
+    var p=eo3(seg(lt,b.t0,b.t0+1.4)),h=b.v/800*MAXH*p;
+    b.rect.setAttribute('y',(BASE3-h).toFixed(1));b.rect.setAttribute('height',Math.max(0,h).toFixed(1));
+    b.glow.setAttribute('y',(BASE3-h).toFixed(1));b.glow.setAttribute('height',Math.max(0,h).toFixed(1));
+    b.num.setAttribute('y',(BASE3-h-26).toFixed(1));b.num.setAttribute('opacity',seg(lt,b.t0,b.t0+.3).toFixed(3));
+    b.num.textContent=fmt(Math.round(b.v*p))+'억';
+    var lp=seg(lt,b.t0-.4,b.t0+.2);b.lab.setAttribute('opacity',lp.toFixed(3));b.sl.setAttribute('opacity',lp.toFixed(3));
+  });
+  NE.forEach(function(o){var s=Math.max(.001,eob(seg(lt,o.t0,o.t0+.5)));o.g.setAttribute('transform','translate('+o.x+' 560) scale('+s.toFixed(3)+')');});
+}
+
+/* ---------- scene 4 : the scale ---------- */
+var v4=$('hv-v4');
+var d4=mk('defs',{},v4);
+var lgb=mk('linearGradient',{id:'hv-lgb',x1:470,y1:0,x2:1130,y2:0,gradientUnits:'userSpaceOnUse'},d4);
+mk('stop',{offset:'0','stop-color':'#fb7185'},lgb);mk('stop',{offset:'1','stop-color':'#34d399'},lgb);
+var P4={cx:800,cy:285,L:330,hang:130};
+mk('line',{x1:P4.cx,y1:P4.cy,x2:P4.cx,y2:540,stroke:'rgba(255,255,255,.22)','stroke-width':10,'stroke-linecap':'round'},v4);
+mk('rect',{x:P4.cx-120,y:536,width:240,height:18,rx:9,fill:'#10131d',stroke:'rgba(255,255,255,.22)','stroke-width':2},v4);
+var beam=mk('line',{x1:470,y1:285,x2:1130,y2:285,stroke:'url(#hv-lgb)','stroke-width':12,'stroke-linecap':'round'},v4);
+mk('circle',{cx:P4.cx,cy:P4.cy,r:22,fill:'#10131d',stroke:'#fff','stroke-width':4,opacity:.9},v4);
+function mkPan(color,lab,subt){
+  var g=mk('g',{},v4),H=P4.hang;
+  mk('line',{x1:0,y1:0,x2:-105,y2:H,stroke:'rgba(255,255,255,.4)','stroke-width':3},g);
+  mk('line',{x1:0,y1:0,x2:105,y2:H,stroke:'rgba(255,255,255,.4)','stroke-width':3},g);
+  mk('rect',{x:-125,y:H,width:250,height:16,rx:8,fill:color,opacity:.9},g);
+  var coins=[];
+  for(var k=0;k<7;k++){
+    var row=k<4?0:1,x=row?(k-4-1)*48:(k-1.5)*48,y=H-20-row*34;
+    var cg=mk('g',{transform:'translate('+x+' '+y+') scale(.001)'},g);
+    mk('circle',{r:20,fill:color,stroke:'rgba(255,255,255,.55)','stroke-width':2.5},cg);
+    mk('circle',{r:11,fill:'none',stroke:'rgba(7,8,13,.35)','stroke-width':2.5},cg);
+    coins.push({g:cg,x:x,y:y});
+  }
+  var lt1=mk('text',{x:0,y:H+55,'text-anchor':'middle','font-size':32,'font-weight':800,fill:'#eef0f7'},g);lt1.textContent=lab;
+  var lt2=mk('text',{x:0,y:H+88,'text-anchor':'middle','font-size':22,fill:'#9aa1b5'},g);lt2.textContent=subt;
+  return {g:g,coins:coins,lt1:lt1,lt2:lt2};
+}
+var panL=mkPan('#fb7185','투자비용','지금 쓰는 돈'),panR=mkPan('#34d399','미래 현금','앞으로 벌 돈');
+var tagR=mk('text',{x:0,y:P4.hang+120,'text-anchor':'middle','font-size':24,'font-weight':800,fill:'#fbbf24',opacity:0},panR.g);tagR.textContent='현재 가치로 깎아 계산!';
+var CHIPS=[{x:360,a:'NPV',b:' 미래 돈의 현재 가치',c:COLS[0],t0:4.3},{x:800,a:'IRR',b:' 투자 수익률',c:COLS[1],t0:4.8},{x:1240,a:'회수기간',b:' 본전 뽑는 시간',c:COLS[2],t0:5.3}].map(function(o){
+  var g=mk('g',{transform:'translate('+o.x+' 625) scale(.001)'},v4);
+  mk('rect',{x:-200,y:-32,width:400,height:64,rx:32,fill:o.c,opacity:.18},g);
+  mk('rect',{x:-200,y:-32,width:400,height:64,rx:32,fill:'#10131d',stroke:o.c,'stroke-width':3},g);
+  var t=mk('text',{x:0,y:9,'text-anchor':'middle','font-size':24,fill:'#cfd5e8'},g);
+  var s1=mk('tspan',{'font-size':30,'font-weight':900,fill:o.c},t);s1.textContent=o.a;
+  var s2=mk('tspan',{},t);s2.textContent=o.b;
+  o.g=g;return o;
+});
+var h4a=$('hv-h4a'),c4=$('hv-c4');
+function wL(t){return 5*eo3(seg(t,.2,1.2));}
+function wR(t){return 7*eio3(seg(t,1.4,3.0))-2*eio3(seg(t,3.7,4.5));}
+function beamTarget(t){var v=(wR(t)-wL(t))*5;return v>18?18:v<-18?-18:v;}
+function beamAngle(lt){
+  var dt=1/120,n=Math.floor(lt/dt),a=0,v=0,w=7,z=.4,i,acc;
+  for(i=0;i<n;i++){acc=w*w*(beamTarget(i*dt)-a)-2*z*w*v;v+=acc*dt;a+=v*dt;}
+  return a;
+}
+function setCoins(pan,count,tt){
+  for(var k=0;k<7;k++){
+    var s=Math.max(.001,eob(clamp01(count-k)));
+    if(count-k<=0)s=.001;
+    pan.coins[k].g.setAttribute('transform','translate('+pan.coins[k].x+' '+pan.coins[k].y+') scale('+s.toFixed(3)+')');
+  }
+}
+function r4(lt){
+  headIn(h4a,lt);capIn(c4,lt,.6);
+  var phi=beamAngle(lt),rad=phi*D2R,cs=Math.cos(rad),sn=Math.sin(rad);
+  var lx=P4.cx-P4.L*cs,ly=P4.cy-P4.L*sn,rx=P4.cx+P4.L*cs,ry=P4.cy+P4.L*sn;
+  beam.setAttribute('x1',lx.toFixed(1));beam.setAttribute('y1',ly.toFixed(1));beam.setAttribute('x2',rx.toFixed(1));beam.setAttribute('y2',ry.toFixed(1));
+  var pa=seg(lt,0,.6);
+  panL.g.setAttribute('transform','translate('+lx.toFixed(1)+' '+ly.toFixed(1)+')');panR.g.setAttribute('transform','translate('+rx.toFixed(1)+' '+ry.toFixed(1)+')');
+  panL.g.setAttribute('opacity',pa.toFixed(3));panR.g.setAttribute('opacity',pa.toFixed(3));
+  setCoins(panL,wL(lt));setCoins(panR,wR(lt));
+  tagR.setAttribute('opacity',(seg(lt,3.7,4.2)).toFixed(3));
+  CHIPS.forEach(function(o){var s=Math.max(.001,eob(seg(lt,o.t0,o.t0+.5)));o.g.setAttribute('transform','translate('+o.x+' 625) scale('+s.toFixed(3)+')');});
+}
+
+/* ---------- scene 5 : converge ---------- */
+var pills=[$('hv-p0'),$('hv-p1'),$('hv-p2')],PDX=[-34,0,34];
+var dms=[$('hv-dm0'),$('hv-dm1')],orb=$('hv-orb'),ring=$('hv-ring'),eq=$('hv-eq'),c5=$('hv-c5');
+function r5(lt){
+  var i,p,cv=eio3(seg(lt,2.3,3.4));
+  for(i=0;i<3;i++){
+    var e=eob(seg(lt,.2+.25*i,.9+.25*i)),o=clamp01(seg(lt,.2+.25*i,.6+.25*i));
+    var dx=PDX[i]*(1-cv),dy=(1-eo3(seg(lt,.2+.25*i,.9+.25*i)))*4+3.9*cv+Math.sin(lt*2+i)*.35*(1-cv);
+    var sc=Math.max(.001,e)*lerp(1,.55,cv);
+    pills[i].style.opacity=(o*(1-clamp01((cv-.7)/.3))).toFixed(3);
+    pills[i].style.transform='translate(-50%,-50%) translate('+dx.toFixed(2)+'cqw,'+dy.toFixed(2)+'cqw) scale('+sc.toFixed(3)+')';
+  }
+  for(i=0;i<2;i++){
+    var dp=clamp01(seg(lt,.8+.25*i,1.3+.25*i))*(1-clamp01(cv/.5));
+    dms[i].style.opacity=dp.toFixed(3);
+    dms[i].style.transform='translate(-50%,-50%) translate('+((i?17:-17)*(1-cv)).toFixed(2)+'cqw,0)';
+  }
+  var oo=eo3(seg(lt,2.3,3.6));
+  orb.style.opacity=(oo*(.75+.15*Math.sin(lt*3))*(1-seg(lt,4.6,5.6)*.4)).toFixed(3);
+  orb.style.transform='scale('+(lerp(.2,1,oo)+.04*Math.sin(lt*3)).toFixed(3)+')';
+  var rp=seg(lt,3.2,4.6);
+  ring.style.opacity=(rp>0&&rp<1?(1-rp)*.8:0).toFixed(3);ring.style.transform='scale('+lerp(.3,2.4,eo3(rp)).toFixed(3)+')';
+  p=eo3(seg(lt,3.0,4.0));
+  eq.style.opacity=p.toFixed(3);eq.style.transform='translateY(-50%) scale('+lerp(.7,1,p).toFixed(3)+')';eq.style.filter=p>=1?'none':'blur('+((1-p)*10).toFixed(1)+'px)';
+  capIn(c5,lt,4.3);
+}
+
+/* ---------- scene table & master render ---------- */
+var SC=[
+ {el:$('hv-s1'),a:0,b:4,fi:.05,fo:.35,fn:r1},
+ {el:$('hv-s2'),a:4,b:10,fi:.45,fo:.35,fn:r2},
+ {el:$('hv-s3'),a:10,b:17,fi:.45,fo:.35,fn:r3},
+ {el:$('hv-s4'),a:17,b:24,fi:.45,fo:.35,fn:r4},
+ {el:$('hv-s5'),a:24,b:30,fi:.45,fo:0.001,fn:r5}
+];
+var blobs=[$('hv-b1'),$('hv-b2'),$('hv-b3')],fadeEl=$('hv-fade');
+function render(t){
+  t=Math.max(0,Math.min(DUR,t));
+  var m=rm?0:1;
+  blobs[0].style.transform='translate('+(Math.sin(t*.35)*9*m).toFixed(2)+'cqw,'+(Math.cos(t*.27)*5*m).toFixed(2)+'cqw)';
+  blobs[1].style.transform='translate('+(Math.cos(t*.3)*-8*m).toFixed(2)+'cqw,'+(Math.sin(t*.33)*6*m).toFixed(2)+'cqw)';
+  blobs[2].style.transform='translate('+(Math.sin(t*.22+1)*10*m).toFixed(2)+'cqw,'+(Math.cos(t*.25)*-4*m).toFixed(2)+'cqw)';
+  for(var i=0;i<SC.length;i++){
+    var s=SC[i],lt=t-s.a;
+    var al=clamp01(lt/s.fi)*clamp01((s.b-t)/s.fo);
+    if(t>=s.b||lt<0)al=0;
+    if(al<=.001){s.el.style.visibility='hidden';s.el.style.opacity='0';continue;}
+    s.el.style.visibility='visible';s.el.style.opacity=al.toFixed(3);
+    s.el.style.transform='scale('+lerp(.985,1,eo3(seg(lt,0,.6))).toFixed(4)+')';
+    s.fn(lt);
+  }
+  fadeEl.style.opacity=seg(t,29,30).toFixed(3);
+}
+
+/* ---------- audio (Web Audio: 경쾌한 현악 앙상블 합성, 외부 음원 없음) ---------- */
+/* 120BPM D장조 I–V–vi–IV. 피치카토 → 바이올린 스타카토 → 멜로디 → 투티 → 종지 화음 */
+var SP=60/120/4,BAR=16*SP;
+var CH=[{n:[62,66,69],r:38},{n:[61,64,69],r:45},{n:[62,66,71],r:47},{n:[62,67,71],r:43}];
+var MEL=[[[0,78,6],[6,76,2],[8,74,8]],[[0,76,4],[4,73,4],[8,69,8]],[[0,74,6],[6,76,2],[8,78,8]],[[0,79,4],[4,78,4],[8,76,4],[12,74,4]]];
+var PAT=[0,2,1,2,0,2,1,2,0,2,1,2,0,2,1,2];
+var IK=[[0,.3],[4,.45],[10,.6],[17,.75],[24,1],[28,1],[30,1]];
+var TR=[[4,1.5,false],[10,1.5,false],[17,1.6,false],[24,2.3,true]];
+function inten(t){for(var i=1;i<IK.length;i++){if(t<=IK[i][0]){var a=IK[i-1],b=IK[i];return lerp(a[1],b[1],(t-a[0])/(b[0]-a[0]));}}return 1;}
+function mtof(m){return 440*Math.pow(2,(m-69)/12);}
+
+var ctx=null,bus=null,muteG=null,noiseBuf=null,irBuf=null,sess=null,muted=false;
+function initAudio(){
+  if(ctx)return;
+  var AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return;
+  try{ctx=new AC();}catch(e){ctx=null;return;}
+  try{
+    bus=ctx.createGain();
+    var comp=ctx.createDynamicsCompressor();
+    comp.threshold.value=-16;comp.knee.value=18;comp.ratio.value=4;comp.attack.value=.006;comp.release.value=.25;
+    var master=ctx.createGain();master.gain.value=.5;
+    muteG=ctx.createGain();muteG.gain.value=muted?0:1;
+    bus.connect(comp);comp.connect(master);master.connect(muteG);muteG.connect(ctx.destination);
+    var len=Math.floor(ctx.sampleRate*2);
+    noiseBuf=ctx.createBuffer(1,len,ctx.sampleRate);
+    var d=noiseBuf.getChannelData(0);for(var i=0;i<len;i++)d[i]=Math.random()*2-1;
+    /* 홀 잔향용 임펄스 응답(지수 감쇠 노이즈, 2.2초) */
+    var il=Math.floor(ctx.sampleRate*2.2);irBuf=ctx.createBuffer(2,il,ctx.sampleRate);
+    for(var c=0;c<2;c++){var dd=irBuf.getChannelData(c);for(var j=0;j<il;j++)dd[j]=(Math.random()*2-1)*Math.pow(1-j/il,3.2);}
+  }catch(e2){ctx=null;}
+}
+function resumeCtx(){
+  if(!ctx)return Promise.resolve();
+  try{
+    var p=ctx.resume();
+    return Promise.race([Promise.resolve(p),new Promise(function(r){setTimeout(r,700);})]).catch(function(){});
+  }catch(e){return Promise.resolve();}
+}
+
+function buildSession(off,base){
+  var s={srcs:[],out:ctx.createGain()},out=s.out;
+  out.connect(bus);
+  function at(T){return base+T;}
+  function reg(n){s.srcs.push(n);return n;}
+  var g0=off>=28?Math.max(.0001,1-(off-28)/2):1;
+  out.gain.setValueAtTime(g0,at(off));
+  if(off<28)out.gain.setValueAtTime(1,at(28));
+  out.gain.linearRampToValueAtTime(.0001,at(30));
+
+  /* 현악 섹션 공통 음색: 몸통 공명(peaking) + 고역 정리(highshelf) + 홀 잔향 */
+  var strBus=ctx.createGain(),body=ctx.createBiquadFilter(),air=ctx.createBiquadFilter();
+  body.type='peaking';body.frequency.value=1300;body.Q.value=1;body.gain.value=3;
+  air.type='highshelf';air.frequency.value=5000;air.gain.value=-9;
+  strBus.connect(body);body.connect(air);air.connect(out);
+  if(irBuf){var rv=ctx.createConvolver(),wet=ctx.createGain();rv.buffer=irBuf;wet.gain.value=.32;air.connect(rv);rv.connect(wet);wet.connect(out);}
+
+  function noiseHit(T,ftype,f,q,vol,decay,dest){
+    var src=reg(ctx.createBufferSource());src.buffer=noiseBuf;
+    var fl=ctx.createBiquadFilter();fl.type=ftype;fl.frequency.value=f;fl.Q.value=q;
+    var g=ctx.createGain();g.gain.setValueAtTime(vol,at(T));g.gain.exponentialRampToValueAtTime(.0005,at(T+decay));
+    src.connect(fl);fl.connect(g);g.connect(dest);
+    src.start(at(T),Math.random()*1.4,decay+.03);
+  }
+  /* 부드러운 프레임 드럼 */
+  function drum(T,vol){
+    var o=reg(ctx.createOscillator()),g=ctx.createGain();o.type='sine';
+    o.frequency.setValueAtTime(140,at(T));o.frequency.exponentialRampToValueAtTime(55,at(T+.14));
+    g.gain.setValueAtTime(vol,at(T));g.gain.exponentialRampToValueAtTime(.001,at(T+.3));
+    o.connect(g);g.connect(out);o.start(at(T));o.stop(at(T+.32));
+    noiseHit(T,'bandpass',1800,.8,.05,.03,out);
+  }
+  /* 피치카토: 현을 손가락으로 튕기는 소리 */
+  function pizz(T,m,vol,dec){
+    if(T<off)return;
+    var f=mtof(m),o=reg(ctx.createOscillator()),o2=reg(ctx.createOscillator()),m2=ctx.createGain(),fl=ctx.createBiquadFilter(),g=ctx.createGain();
+    o.type='triangle';o2.type='sawtooth';o.frequency.value=f;o2.frequency.value=f;o2.detune.value=4;m2.gain.value=.35;
+    fl.type='lowpass';fl.Q.value=1.5;fl.frequency.setValueAtTime(Math.min(5200,f*8),at(T));fl.frequency.exponentialRampToValueAtTime(Math.max(300,f*1.5),at(T+dec));
+    g.gain.setValueAtTime(.0001,at(T));g.gain.linearRampToValueAtTime(vol,at(T+.003));g.gain.exponentialRampToValueAtTime(.0006,at(T+dec));
+    o.connect(fl);o2.connect(m2);m2.connect(fl);fl.connect(g);g.connect(strBus);
+    o.start(at(T));o2.start(at(T));o.stop(at(T+dec+.05));o2.stop(at(T+dec+.05));
+  }
+  /* 스타카토: 짧게 끊어 켜는 바이올린 */
+  function stacc(T,m,vol,len){
+    if(T<off)return;
+    var g=ctx.createGain(),fl=ctx.createBiquadFilter();
+    fl.type='lowpass';fl.Q.value=.8;fl.frequency.value=3400;
+    g.gain.setValueAtTime(.0001,at(T));g.gain.linearRampToValueAtTime(vol,at(T+.012));g.gain.setValueAtTime(vol,at(T+len*.45));g.gain.exponentialRampToValueAtTime(.0006,at(T+len));
+    fl.connect(g);g.connect(strBus);
+    for(var k=0;k<2;k++){var o=reg(ctx.createOscillator());o.type='sawtooth';o.frequency.value=mtof(m);o.detune.value=k?8:-8;o.connect(fl);o.start(at(T));o.stop(at(T+len+.03));}
+  }
+  /* 레가토: 비브라토가 있는 긴 활 */
+  function legato(T0,m,dur,vol,att,vib,cut){
+    var T1=T0+dur;if(T1<=off+.02)return;
+    var s0=Math.max(T0,off),a=T0<off?.05:att,rel=Math.max(s0+a+.02,T1);
+    var g=ctx.createGain(),fl=ctx.createBiquadFilter();
+    fl.type='lowpass';fl.Q.value=.7;fl.frequency.value=cut;
+    g.gain.setValueAtTime(.0001,at(s0));g.gain.linearRampToValueAtTime(vol,at(s0+a));g.gain.setValueAtTime(vol,at(rel));g.gain.linearRampToValueAtTime(.0001,at(rel+.35));
+    fl.connect(g);g.connect(strBus);
+    var lfo=reg(ctx.createOscillator()),lg=ctx.createGain();lfo.frequency.value=5.4;
+    lg.gain.setValueAtTime(0,at(s0));lg.gain.linearRampToValueAtTime(vib,at(s0+.45));
+    lfo.connect(lg);lfo.start(at(s0));lfo.stop(at(rel+.4));
+    for(var k=0;k<2;k++){var o=reg(ctx.createOscillator());o.type='sawtooth';o.frequency.value=mtof(m);o.detune.value=k?6:-6;lg.connect(o.detune);o.connect(fl);o.start(at(s0));o.stop(at(rel+.4));}
+  }
+  /* 장면 전환: 위로 쓸어 올리는 라이저 + 팀파니 같은 임팩트 */
+  function riser(T,L,vol){
+    if(T<=off+.03)return;
+    var s0=Math.max(T-L,off),p0=(s0-(T-L))/L;
+    var src=reg(ctx.createBufferSource());src.buffer=noiseBuf;src.loop=true;
+    var bp=ctx.createBiquadFilter();bp.type='bandpass';bp.Q.value=1.4;
+    bp.frequency.setValueAtTime(300*Math.pow(30,p0),at(s0));bp.frequency.exponentialRampToValueAtTime(9000,at(T));
+    var g=ctx.createGain();g.gain.setValueAtTime(Math.max(.0001,vol*p0),at(s0));g.gain.linearRampToValueAtTime(vol,at(T));g.gain.linearRampToValueAtTime(.0001,at(T)+.04);
+    src.connect(bp);bp.connect(g);g.connect(out);src.start(at(s0),Math.random());src.stop(at(T)+.06);
+  }
+  function impact(T,big){
+    if(T<off)return;
+    var o=reg(ctx.createOscillator()),g=ctx.createGain();o.type='sine';
+    o.frequency.setValueAtTime(110,at(T));o.frequency.exponentialRampToValueAtTime(48,at(T)+.8);
+    g.gain.setValueAtTime(big?.45:.32,at(T));g.gain.exponentialRampToValueAtTime(.001,at(T)+(big?1.3:1));
+    o.connect(g);g.connect(out);o.start(at(T));o.stop(at(T)+(big?1.4:1.1));
+  }
+
+  /* 1) 레가토 화음(비올라·첼로): 2초부터, 장면 강도만큼 크고 밝게. 28초는 D장조 종지 화음 */
+  for(var b=1;b<15;b++){
+    var T0=b*BAR;if(T0>=DUR)break;
+    var last=b===14,c=last?CH[0]:CH[b%4],I=inten(T0),dur=last?2:BAR;
+    for(var ni=0;ni<3;ni++)legato(T0,c.n[ni]-12,dur,last?.07:.03+.035*I,last?.08:.35,10,1400+1600*I);
+    if(b>=12)legato(T0,c.r,dur,.06,.2,6,900);
+  }
+
+  /* 2) 16분음 그리드: 피치카토 · 첼로 베이스 · 바이올린 스타카토 · 타악 */
+  var n0=Math.max(0,Math.ceil(off/SP-1e-6));
+  for(var n=n0;n<240;n++){
+    var T=n*SP;if(T>=DUR)break;
+    var st=n%16,ch=CH[Math.floor(n/16)%4],I2=inten(T);
+    if(T>=28){if(n===224){pizz(T,38,.5,.9);pizz(T,50,.35,.8);pizz(T,62,.3,.7);}continue;}
+    if(T<10&&st%2===0)pizz(T,ch.n[[0,1,2,1][(st/2)%4]],st%4===0?.32:.22,.32);
+    if(T>=4&&st%4===0)pizz(T,[ch.r,ch.r+7,ch.r+12,ch.r+7][st/4],.42,.45);
+    if(T>=4&&(T>=10||st%2===0))stacc(T,ch.n[PAT[st]]+12,(.045+.03*I2)*(st%4===0?1:st%2===0?.8:.6),T>=10?.1:.16);
+    if(T>=10){
+      if(st%8===0||(T>=24&&st%4===0))drum(T,.5);
+      if(T>=17&&st%4===2)noiseHit(T,'highpass',7000,.7,.035,.06,out);
+    }
+  }
+
+  /* 3) 바이올린 멜로디: 18초부터, 24초부터는 한 옥타브 위 */
+  for(var mb=9;mb<14;mb++){
+    var mel=MEL[mb%4],oct=mb>=12?12:0;
+    for(var mi=0;mi<mel.length;mi++){var e=mel[mi];legato(mb*BAR+e[0]*SP,e[1]+oct,e[2]*SP-.03,.075,.06,14,4200);}
+  }
+  legato(28,86,2,.08,.05,16,4200);
+
+  /* 4) 장면 전환 */
+  impact(0,false);
+  for(var ti=0;ti<TR.length;ti++){riser(TR[ti][0],TR[ti][1],TR[ti][2]?.16:.1);impact(TR[ti][0],TR[ti][2]);}
+  return s;
+}
+function stopAudio(){
+  if(!sess)return;
+  var s=sess;sess=null;
+  try{var tn=ctx.currentTime;s.out.gain.cancelScheduledValues(tn);s.out.gain.setValueAtTime(s.out.gain.value,tn);s.out.gain.linearRampToValueAtTime(0,tn+.04);}catch(e){}
+  setTimeout(function(){
+    for(var i=0;i<s.srcs.length;i++){try{s.srcs[i].stop();}catch(e){}}
+    try{s.out.disconnect();}catch(e){}
+  },90);
+}
+
+/* ---------- player state ---------- */
+var seek=$('hv-seek'),timeEl=$('hv-time'),playBtn=$('hv-play'),restartBtn=$('hv-restart'),muteBtn=$('hv-mute'),overlay=$('hv-overlay'),bigBtn=$('hv-big'),hint=$('hv-hint');
+var state='idle',cur=1.5,playing=false,clockOn=false,wasPlaying=false,token=0,raf=0,lastSec=-1;
+var clk={mode:'perf',startCtx:0,perfStart:0,from:0};
+
+function mmss(s){s=Math.floor(s);return Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60);}
+function updateUI(t){
+  seek.value=t.toFixed(2);
+  seek.style.setProperty('--p',(t/DUR*100).toFixed(2)+'%');
+  var sec=Math.floor(t);
+  if(sec!==lastSec){lastSec=sec;timeEl.textContent=mmss(t)+' / 0:30';}
+}
+function setState(s){
+  state=s;
+  var showOv=(s==='idle'||s==='ended');
+  overlay.style.display=showOv?'flex':'none';
+  bigBtn.textContent=s==='ended'?'↺ 다시 보기':'▶';
+  bigBtn.setAttribute('aria-label',s==='ended'?'다시 보기':'영상 재생');
+  hint.textContent=s==='ended'?'재무기획팀 · 회사의 돈 지도':'';
+  hint.style.display=hint.textContent?'':'none';
+  var pl=(s==='playing');
+  playBtn.textContent=pl?'⏸':'▶';
+  playBtn.setAttribute('aria-label',pl?'일시정지':'재생');
+}
+function nowT(){
+  if(clk.mode==='audio'){
+    var lat=0;try{lat=ctx.outputLatency||ctx.baseLatency||0;}catch(e){}
+    return Math.max(clk.from,ctx.currentTime-lat-clk.startCtx);
+  }
+  return (performance.now()-clk.perfStart)/1000;
+}
+function tick(){
+  raf=0;
+  if(!playing||!clockOn)return;
+  var t=nowT();
+  if(t>=DUR){finish();return;}
+  cur=t;render(t);updateUI(t);
+  raf=requestAnimationFrame(tick);
+}
+function startPlayback(from,my){
+  if(my!==token||!playing)return;
+  if(ctx&&ctx.state==='running'){
+    try{
+      clk.mode='audio';clk.from=from;clk.startCtx=ctx.currentTime+LEAD-from;
+      sess=buildSession(from,clk.startCtx);
+    }catch(e){
+      stopAudio();clk.mode='perf';
+    }
+  }else{clk.mode='perf';}
+  if(clk.mode==='perf'){clk.from=from;clk.perfStart=performance.now()-from*1000;}
+  clockOn=true;
+  raf=requestAnimationFrame(tick);
+}
+function play(){
+  if(playing)return;
+  if(state==='ended'||cur>=DUR-.02)cur=0;
+  var my=++token;
+  playing=true;clockOn=false;
+  setState('playing');
+  render(cur);updateUI(cur);
+  initAudio();
+  var from=cur;
+  if(ctx&&ctx.state==='running'){startPlayback(from,my);}
+  else{resumeCtx().then(function(){startPlayback(from,my);});}
+}
+function halt(){
+  token++;
+  if(clockOn)cur=Math.min(DUR,nowT());
+  clockOn=false;playing=false;
+  if(raf){cancelAnimationFrame(raf);raf=0;}
+  stopAudio();
+}
+function pause(){
+  if(!playing)return;
+  halt();
+  setState('paused');
+  render(cur);updateUI(cur);
+}
+function finish(){
+  halt();cur=DUR;
+  render(DUR);updateUI(DUR);
+  setState('ended');
+}
+function restart(){
+  if(playing)halt();
+  cur=0;playing=false;
+  play();
+}
+
+playBtn.addEventListener('click',function(){if(playing)pause();else play();});
+bigBtn.addEventListener('click',function(){play();});
+restartBtn.addEventListener('click',restart);
+muteBtn.addEventListener('click',function(){
+  muted=!muted;
+  muteBtn.textContent=muted?'🔇':'🔊';
+  muteBtn.setAttribute('aria-label',muted?'소리 켜기':'소리 끄기');
+  muteBtn.setAttribute('aria-pressed',muted?'true':'false');
+  if(ctx&&muteG){try{muteG.gain.setTargetAtTime(muted?0:1,ctx.currentTime,.02);}catch(e){}}
+});
+seek.addEventListener('input',function(){
+  var v=parseFloat(seek.value);if(isNaN(v))v=0;
+  if(playing){wasPlaying=true;halt();setState('paused');}
+  cur=Math.max(0,Math.min(DUR,v));
+  render(cur);updateUI(cur);
+  if(cur>=DUR-.005){wasPlaying=false;setState('ended');}
+  else if(state==='idle'||state==='ended')setState('paused');
+});
+seek.addEventListener('change',function(){
+  if(wasPlaying){wasPlaying=false;if(cur<DUR-.02)play();}
+});
+
+render(1.5);updateUI(1.5);setState('idle');
+})();
+</script>
