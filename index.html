@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>재무기획팀 백과사전</title>
+<title>쉽게 이해하는 회사의 숫자</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -190,7 +190,7 @@ footer p{margin:4px 0}
 <div id="progress"></div>
 <header class="topbar">
   <div class="wrap">
-    <a class="brand" href="#top"><i></i><span>재무기획팀 백과사전</span></a>
+    <a class="brand" href="#top"><i></i><span>쉽게 이해하는 회사의 숫자</span></a>
     <label class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="용어 검색 (예: 예산, EBITDA, 현금흐름)" aria-label="용어 검색" autocomplete="off" enterkeyhint="search">
@@ -203,7 +203,7 @@ footer p{margin:4px 0}
 <main id="top">
 <section class="hero wrap">
   <span class="eyebrow">FP&amp;A ENCYCLOPEDIA</span>
-  <h1>숫자를 몰라도 괜찮아요,<br><span>재무기획팀</span> 이야기예요</h1>
+  <h1>숫자를 몰라도 괜찮아요,<br><span>쉽게 이해하는 <span style="white-space:nowrap">회사의 숫자</span></span></h1>
   <p class="sub">리더부터 신입사원까지, 중학교 1학년도 이해하도록 풀어 쓴 재무기획(FP&amp;A) 용어 사전. 모든 용어는 "그래서 회사 성과와 무슨 상관?"까지 연결해요.</p>
   <div class="stats" id="stats"></div>
   <div class="videowrap">
@@ -237,7 +237,7 @@ footer p{margin:4px 0}
 #hv .hv-svg text{font-family:inherit}
 #hv .hv-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center}
 #hv .hv-tw{transform-origin:50% 50%}
-#hv .hv-title{position:relative;display:inline-block;font-size:clamp(34px,13.5cqw,152px);font-weight:900;letter-spacing:-.03em;line-height:1.08;white-space:nowrap}
+#hv .hv-title{position:relative;display:inline-block;font-size:clamp(26px,9.5cqw,108px);font-weight:900;letter-spacing:-.03em;line-height:1.12;white-space:nowrap}
 #hv .hv-tglow{position:absolute;inset:0;opacity:0;background:linear-gradient(90deg,#7c5cff,#22d3ee 55%,#34d399);-webkit-background-clip:text;background-clip:text;color:transparent;filter:blur(.14em)}
 #hv .hv-tt{position:relative}
 #hv .hv-tt span{display:inline-block;opacity:0;background:linear-gradient(90deg,#fff 0%,#d6ccff 35%,#9aeeff 70%,#b8f7de 100%);background-size:500% 100%;background-position:calc(var(--i)*25%) 0;-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -297,8 +297,8 @@ footer p{margin:4px 0}
       <section class="hv-sc" id="hv-s1" aria-hidden="true">
         <svg class="hv-svg" id="hv-v1" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"></svg>
         <div class="hv-center"><div class="hv-tw" id="hv-tw">
-          <div class="hv-title"><div class="hv-tglow" id="hv-tglow">재무기획팀</div>
-            <div class="hv-tt" id="hv-tt"><span style="--i:0">재</span><span style="--i:1">무</span><span style="--i:2">기</span><span style="--i:3">획</span><span style="--i:4">팀</span></div></div>
+          <div class="hv-title"><div class="hv-tglow" id="hv-tglow">쉽게&nbsp;이해하는<br>회사의&nbsp;숫자</div>
+            <div class="hv-tt" id="hv-tt"><span style="--i:0">쉽</span><span style="--i:.67">게</span><span style="--i:1.33">&nbsp;</span><span style="--i:2">이</span><span style="--i:2.67">해</span><span style="--i:3.33">하</span><span style="--i:4">는</span><br><span style="--i:0">회</span><span style="--i:.8">사</span><span style="--i:1.6">의</span><span style="--i:2.4">&nbsp;</span><span style="--i:3.2">숫</span><span style="--i:4">자</span></div></div>
           <div class="hv-sub" id="hv-sub">회사의 <b>돈 지도</b>를 그리는 사람들</div>
           <div class="hv-sweep" id="hv-sweep"></div>
         </div></div>
@@ -394,7 +394,7 @@ function r1(lt){
   for(i=0;i<lines1.length;i++){p=eio3(seg(lt,.15+.2*i,.15+.2*i+.9));lines1[i].e.style.strokeDashoffset=(lines1[i].len*(1-p)).toFixed(1);}
   for(i=0;i<nodes1.length;i++){p=eob(seg(lt,.1+.22*i,.6+.22*i));nodes1[i].c.setAttribute('r',(9*p).toFixed(2));nodes1[i].h.setAttribute('r',(30*p).toFixed(2));}
   for(i=0;i<tchars.length;i++){
-    p=eo3(seg(lt,.15+.1*i,.85+.1*i));
+    p=eo3(seg(lt,.15+.07*i,.85+.07*i));
     var s=tchars[i].style;s.opacity=p.toFixed(3);
     s.transform='translateY('+((1-p)*3.5).toFixed(2)+'cqw) scale('+lerp(.85,1,p).toFixed(3)+')';
     s.filter=p>=1?'none':'blur('+((1-p)*14).toFixed(1)+'px)';
@@ -804,7 +804,7 @@ function setState(s){
   overlay.style.display=showOv?'flex':'none';
   bigBtn.textContent=s==='ended'?'↺ 다시 보기':'▶';
   bigBtn.setAttribute('aria-label',s==='ended'?'다시 보기':'영상 재생');
-  hint.textContent=s==='ended'?'재무기획팀 · 회사의 돈 지도':'';
+  hint.textContent=s==='ended'?'쉽게 이해하는 회사의 숫자':'';
   hint.style.display=hint.textContent?'':'none';
   var pl=(s==='playing');
   playBtn.textContent=pl?'⏸':'▶';
